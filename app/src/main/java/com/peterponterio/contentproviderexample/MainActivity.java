@@ -9,7 +9,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
@@ -85,13 +84,20 @@ public class MainActivity extends AppCompatActivity {
             of the permissions that we're requesting, which in this case is only READ_CONTACTS. Final
             parameter is the request code which is sent the value defined by the variable REQUEST_CODE_READ_CONTACTS
          */
-        if (hasReadContactPermission == PackageManager.PERMISSION_GRANTED) {
-            Log.d(TAG, "onCreate: permission granted");
-//            READ_CONTACTS_GRANTED = true;
-        } else {
-            Log.d(TAG, "onCreate: requesting permission");
+
+//        if (hasReadContactPermission == PackageManager.PERMISSION_GRANTED) {
+//            Log.d(TAG, "onCreate: permission granted");
+////            READ_CONTACTS_GRANTED = true;
+//        } else {
+//            Log.d(TAG, "onCreate: requesting permission");
+//            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
+//        }
+        //simplified version of code above ^^
+        if(hasReadContactPermission != PackageManager.PERMISSION_GRANTED) {
+            Log.d(TAG, "onCreate: requesting permissions");
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, REQUEST_CODE_READ_CONTACTS);
         }
+
 
 
         fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -231,27 +237,31 @@ public class MainActivity extends AppCompatActivity {
         were denied, as the user can accept and deny permissions(ex: for camera app, can accept permission
         to use camera but deny permission to use location where camera was used)
      */
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        Log.d(TAG, "onRequestPermissionsResult: starts");
-        //switch statement because some apps need several requests for different permissions. this app
-        //is simple and only needs one permission request code(permisison to access contacts)
-        switch (requestCode) {
-            case REQUEST_CODE_READ_CONTACTS: {
-                //if request is cancelled the result arrays are empty
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    //permission was granted
-                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
-//                    READ_CONTACTS_GRANTED = true;
-                } else {
-                    //permission denied. disable the functionality that depends on this permission
-                    Log.d(TAG, "onRequestPermissionsResult: permission refused");
-                }
-            }
-        }
-        Log.d(TAG, "onRequestPermissionsResult: ends");
 
-    }
+
+
+    //*** unused becaused its redundant to know whether permission was granted or not since the code is written to cope with both conditions ***
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+//        Log.d(TAG, "onRequestPermissionsResult: starts");
+//        //switch statement because some apps need several requests for different permissions. this app
+//        //is simple and only needs one permission request code(permisison to access contacts)
+//        switch (requestCode) {
+//            case REQUEST_CODE_READ_CONTACTS: {
+//                //if request is cancelled the result arrays are empty
+//                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+//                    //permission was granted
+//                    Log.d(TAG, "onRequestPermissionsResult: permission granted");
+////                    READ_CONTACTS_GRANTED = true;
+//                } else {
+//                    //permission denied. disable the functionality that depends on this permission
+//                    Log.d(TAG, "onRequestPermissionsResult: permission refused");
+//                }
+//            }
+//        }
+//        Log.d(TAG, "onRequestPermissionsResult: ends");
+//
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
